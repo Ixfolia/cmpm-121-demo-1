@@ -26,3 +26,8 @@ function updateCounter(): void {
 
 // Add event listener to the button, updates the counter in HTML
 button.addEventListener('click', updateCounter);
+
+// Increment the counter every second
+setInterval(updateCounter, 1000);
+
+
