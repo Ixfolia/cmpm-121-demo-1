@@ -27,7 +27,16 @@ function updateCounter(): void {
 // Add event listener to the button, updates the counter in HTML
 button.addEventListener('click', updateCounter);
 
-// Increment the counter every second
-setInterval(updateCounter, 1000);
+// Increment the counter based on time elapsed
+let lastTime = performance.now();
 
+function incrementCounter(time: number): void {
+    const deltaTime = time - lastTime;
+    counter += deltaTime / 1000; // Increment by the fraction of a second that has passed
+    counterDisplay.textContent = `${Math.floor(counter)} dollars 💰`; // Display the updated counter
+    lastTime = time;
+    requestAnimationFrame(incrementCounter);
+}
+
+requestAnimationFrame(incrementCounter);
 
