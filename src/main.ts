@@ -6,9 +6,9 @@ const header = document.createElement("h1");
 const gameName = "Cool Game 1";
 const button = document.createElement("button");
 const purchaseItems = [
-  { name: 'A', cost: 10, rate: 0.1, count: 0 },
-  { name: 'B', cost: 100, rate: 2.0, count: 0 },
-  { name: 'C', cost: 1000, rate: 50.0, count: 0 },
+  { name: 'A', cost: 10, rate: 0.1, count: 0, priceIncreaseFactor: 1.15 },
+  { name: 'B', cost: 100, rate: 2.0, count: 0, priceIncreaseFactor: 1.15 },
+  { name: 'C', cost: 1000, rate: 50.0, count: 0, priceIncreaseFactor: 1.15 },
 ];
 const purchaseButtons = purchaseItems.map(item => {
   const button = document.createElement("button");
@@ -46,12 +46,12 @@ function updateCounter(): void {
 }
 
 function updateDisplay(): void {
-    counterDisplay.textContent = `${Math.floor(counter)} dollars 💰`; // Display the updated counter
-    growthRateDisplay.textContent = `${growthRate.toFixed(2)} dollars/sec`;
-    purchaseButtons.forEach((button, index) => {
-      button.disabled = counter < purchaseItems[index].cost; // Disable the purchase button if the counter is less than the cost
-      itemCountDisplays[index].textContent = `Item ${button.dataset.name}: ${purchaseItems[index].count}`;
-    });
+  counterDisplay.textContent = `${counter.toFixed(2)} dollars 💰`; // Display the updated counter with 2 decimal places
+  growthRateDisplay.textContent = `${growthRate.toFixed(2)} dollars/sec`;
+  purchaseButtons.forEach((button, index) => {
+    button.disabled = counter < purchaseItems[index].cost; // Disable the purchase button if the counter is less than the cost
+    itemCountDisplays[index].textContent = `Item ${button.dataset.name}: ${purchaseItems[index].count}`;
+  });
 }
 
 // Add event listener to the button, updates the counter in HTML
@@ -64,6 +64,7 @@ purchaseButtons.forEach((button, index) => {
       counter -= purchaseItems[index].cost;
       growthRate += purchaseItems[index].rate;
       purchaseItems[index].count++;
+      purchaseItems[index].cost *= purchaseItems[index].priceIncreaseFactor; // Increase the cost of the item
       updateDisplay();
     }
   });
