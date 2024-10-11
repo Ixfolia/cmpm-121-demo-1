@@ -74,3 +74,18 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-button {
+  margin: 20px;
+}
+
+.purchase-button {
+  margin: 10px;
+}

@@ -1,19 +1,22 @@
 import "./style.css";
 
 // -- Variables -- //
+// -- Variables -- //
 const app: HTMLDivElement = document.querySelector("#app")!;
 const header = document.createElement("h1");
-const gameName = "Cool Game 1";
+const gameName = "Money Maker";
 const button = document.createElement("button");
+button.className = "main-button"; // Add CSS class to main button
 const purchaseItems = [
-  { name: 'A', cost: 10, rate: 0.1, count: 0, priceIncreaseFactor: 1.15 },
-  { name: 'B', cost: 100, rate: 2.0, count: 0, priceIncreaseFactor: 1.15 },
-  { name: 'C', cost: 1000, rate: 50.0, count: 0, priceIncreaseFactor: 1.15 },
+  { name: 'Investment', cost: 10, rate: 0.1, count: 0, priceIncreaseFactor: 1.15 },
+  { name: 'Small Business', cost: 100, rate: 2.0, count: 0, priceIncreaseFactor: 1.15 },
+  { name: 'Corporation', cost: 1000, rate: 50.0, count: 0, priceIncreaseFactor: 1.15 },
 ];
 const purchaseButtons = purchaseItems.map(item => {
   const button = document.createElement("button");
   button.innerHTML = `Purchase ${item.name}`;
   button.dataset.name = item.name;
+  button.className = "purchase-button"; // Add CSS class to purchase buttons
   return button;
 });
 let counter: number = 0;
@@ -28,7 +31,7 @@ const itemCountDisplays = purchaseButtons.map(button => {
 
 // -- Set HTML Element Properties -- //
 header.innerHTML = gameName;
-button.innerHTML = "Click me 🤑";
+button.innerHTML = "Click the Bank 💰";
 
 // Title
 document.title = gameName;
