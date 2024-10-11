@@ -8,7 +8,7 @@ const button = document.createElement("button");
 button.className = "main-button"; // Add CSS class to main button
 const purchaseItems = [
   { name: 'Investment', cost: 10, rate: 0.1, count: 0, priceIncreaseFactor: 1.15, description: 'Invest to earn more money' },
-  { name: 'Small Business', cost: 100, rate: 2.0, count: 0, priceIncreaseFactor: 1.15, description: 'Run a small business to earn more money' },
+  { name: 'Small Business', cost: 100, rate: 2.0, count: 0, priceIncreaseFactor: 1.15, description: 'Run a small business to earn even more money' },
   { name: 'Corporation', cost: 1000, rate: 50.0, count: 0, priceIncreaseFactor: 1.15, description: 'Run a corporation to earn a lot of money' },
   { name: 'Bank', cost: 10000, rate: 500.0, count: 0, priceIncreaseFactor: 1.15, description: 'Own a bank to earn a huge amount of money' },
   { name: 'Country', cost: 100000, rate: 5000.0, count: 0, priceIncreaseFactor: 1.15, description: 'Own a country to earn an enormous amount of money' },
@@ -42,7 +42,8 @@ function updateDisplay(): void {
     const button = document.querySelector(`button[data-name="${item.name}"]`) as HTMLButtonElement;
     const itemCountDisplay = document.querySelector(`div[data-name="${item.name}"]`) as HTMLDivElement;
     button.disabled = counter < item.cost; // Disable the purchase button if the counter is less than the cost
-    itemCountDisplay.textContent = `Item ${item.name}: ${item.count}`;
+    button.innerHTML = `Purchase ${item.name} for ${item.cost.toFixed(2)} dollars`; // Update the button text with the new cost
+    itemCountDisplay.textContent = `[${item.name}: ${item.count}]`;
   });
 }
 
@@ -52,14 +53,14 @@ button.addEventListener('click', updateCounter);
 // Create purchase buttons and add event listeners
 purchaseItems.forEach((item) => {
   const purchaseButton = document.createElement("button");
-  purchaseButton.innerHTML = `Purchase ${item.name}`;
+  purchaseButton.innerHTML = `Purchase ${item.name} for ${item.cost} dollars`;
   purchaseButton.dataset.name = item.name;
   purchaseButton.className = "purchase-button"; // Add CSS class to purchase buttons
   app.append(purchaseButton);
 
   const itemDescription = document.createElement('div');
   itemDescription.textContent = item.description;
-  app
+  app.append(itemDescription);
 
   const itemCountDisplay = document.createElement('div');
   itemCountDisplay.dataset.name = item.name;
