@@ -73,17 +73,25 @@ function updateCounter(): void {
 }
 
 function updateDisplay(): void {
-  counterDisplay.textContent = `${counter.toFixed(2)} dollars 💰`; // Display the updated counter with 2 decimal places
+  updateCounterDisplay();
+  updateGrowthRateDisplay();
+  updatePurchaseButtons();
+}
+
+function updateCounterDisplay(): void {
+  counterDisplay.textContent = `${counter.toFixed(2)} dollars 💰`;
+}
+
+function updateGrowthRateDisplay(): void {
   growthRateDisplay.textContent = `${growthRate.toFixed(2)} dollars/sec`;
+}
+
+function updatePurchaseButtons(): void {
   purchaseItems.forEach((item) => {
-    const button = document.querySelector(
-      `button[data-name="${item.name}"]`,
-    ) as HTMLButtonElement;
-    const itemCountDisplay = document.querySelector(
-      `div[data-name="${item.name}"]`,
-    ) as HTMLDivElement;
-    button.disabled = counter < item.cost; // Disable the purchase button if the counter is less than the cost
-    button.innerHTML = `Purchase ${item.name} for ${item.cost.toFixed(2)} dollars`; // Update the button text with the new cost
+    const button = document.querySelector(`button[data-name="${item.name}"]`) as HTMLButtonElement;
+    const itemCountDisplay = document.querySelector(`div[data-name="${item.name}"]`) as HTMLDivElement;
+    button.disabled = counter < item.cost;
+    button.innerHTML = `Purchase ${item.name} for ${item.cost.toFixed(2)} dollars`;
     itemCountDisplay.textContent = `[${item.name}: ${item.count}]`;
   });
 }
@@ -91,12 +99,43 @@ function updateDisplay(): void {
 // Add event listener to the button, updates the counter in HTML
 button.addEventListener("click", updateCounter);
 
-// Create purchase buttons and add event listeners
-purchaseItems.forEach((item) => {
+// ------- Items ------- //
+
+interface PurchaseItem {
+  name: string;
+  cost: number;
+  rate: number;
+  count: number;
+  priceIncreaseFactor: number;
+  description: string;
+}
+
+function createPurchaseButton(item: PurchaseItem): HTMLButtonElement {
   const purchaseButton = document.createElement("button");
   purchaseButton.innerHTML = `Purchase ${item.name} for ${item.cost} dollars`;
   purchaseButton.dataset.name = item.name;
-  purchaseButton.className = "purchase-button"; // Add CSS class to purchase buttons
+  purchaseButton.className = "purchase-button";
+
+  purchaseButton.addEventListener("click", () => {
+    attemptToPurchase(item);
+  });
+
+  return purchaseButton;
+}
+
+function attemptToPurchase(item: PurchaseItem): void {
+  if (counter >= item.cost) {
+    counter -= item.cost;
+    growthRate += item.rate;
+    item.count++;
+    item.cost *= item.priceIncreaseFactor;
+    updateDisplay();
+  }
+}
+
+// Loop through each purchaseItem and append the created button
+purchaseItems.forEach((item) => {
+  const purchaseButton = createPurchaseButton(item); // Call the function to create a button
   app.append(purchaseButton);
 
   const itemDescription = document.createElement("div");
@@ -106,16 +145,6 @@ purchaseItems.forEach((item) => {
   const itemCountDisplay = document.createElement("div");
   itemCountDisplay.dataset.name = item.name;
   app.append(itemCountDisplay);
-
-  purchaseButton.addEventListener("click", () => {
-    if (counter >= item.cost) {
-      counter -= item.cost;
-      growthRate += item.rate;
-      item.count++;
-      item.cost *= item.priceIncreaseFactor; // Increase the cost of the item
-      updateDisplay();
-    }
-  });
 });
 
 // Increment the counter based on time elapsed
