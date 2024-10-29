@@ -1,4 +1,4 @@
-import "./style.css";
+// import "./style.css";
 // -- Variables -- //
 const app = document.querySelector("#app");
 const header = document.createElement("h1");
