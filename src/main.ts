@@ -6,13 +6,14 @@ const header = document.createElement("h1");
 const gameName = "Money Maker";
 const button = document.createElement("button");
 button.className = "main-button"; // Add CSS class to main button
+const priceIncreaseFactor = 1.5;
 const purchaseItems = [
   {
     name: "Investment",
     cost: 10,
     rate: 0.1,
     count: 0,
-    priceIncreaseFactor: 1.15,
+    priceIncreaseFactor,
     description: "Invest to earn more money",
   },
   {
@@ -20,7 +21,7 @@ const purchaseItems = [
     cost: 100,
     rate: 2.0,
     count: 0,
-    priceIncreaseFactor: 1.15,
+    priceIncreaseFactor,
     description: "Run a small business to earn even more money",
   },
   {
@@ -28,7 +29,7 @@ const purchaseItems = [
     cost: 1000,
     rate: 50.0,
     count: 0,
-    priceIncreaseFactor: 1.15,
+    priceIncreaseFactor,
     description: "Run a corporation to earn a lot of money",
   },
   {
@@ -36,7 +37,7 @@ const purchaseItems = [
     cost: 10000,
     rate: 500.0,
     count: 0,
-    priceIncreaseFactor: 1.15,
+    priceIncreaseFactor,
     description: "Own a bank to earn a huge amount of money",
   },
   {
@@ -44,7 +45,7 @@ const purchaseItems = [
     cost: 100000,
     rate: 5000.0,
     count: 0,
-    priceIncreaseFactor: 1.15,
+    priceIncreaseFactor,
     description: "Own a country to earn an enormous amount of money",
   },
 ];
