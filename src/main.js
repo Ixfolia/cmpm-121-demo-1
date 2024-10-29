@@ -1,0 +1,129 @@
+import "./style.css";
+// -- Variables -- //
+const app = document.querySelector("#app");
+const header = document.createElement("h1");
+const gameName = "Money Maker";
+const button = document.createElement("button");
+button.className = "main-button"; // Add CSS class to main button
+const priceIncreaseFactor = 1.5;
+const purchaseItems = [
+    {
+        name: "Investment",
+        cost: 10,
+        rate: 0.1,
+        count: 0,
+        priceIncreaseFactor,
+        description: "Invest to earn more money",
+    },
+    {
+        name: "Small Business",
+        cost: 100,
+        rate: 2.0,
+        count: 0,
+        priceIncreaseFactor,
+        description: "Run a small business to earn even more money",
+    },
+    {
+        name: "Corporation",
+        cost: 1000,
+        rate: 50.0,
+        count: 0,
+        priceIncreaseFactor,
+        description: "Run a corporation to earn a lot of money",
+    },
+    {
+        name: "Bank",
+        cost: 10000,
+        rate: 500.0,
+        count: 0,
+        priceIncreaseFactor,
+        description: "Own a bank to earn a huge amount of money",
+    },
+    {
+        name: "Country",
+        cost: 100000,
+        rate: 5000.0,
+        count: 0,
+        priceIncreaseFactor,
+        description: "Own a country to earn an enormous amount of money",
+    },
+];
+let counter = 0;
+let growthRate = 0;
+const counterDisplay = document.querySelector("#counter-display");
+const growthRateDisplay = document.createElement("div");
+// -- Set HTML Element Properties -- //
+header.innerHTML = gameName;
+button.innerHTML = "Click the Bank 💰";
+// Title
+document.title = gameName;
+// -- Functions -- //
+app.append(header);
+app.append(button);
+app.append(growthRateDisplay);
+function updateCounter() {
+    counter++;
+    updateDisplay();
+}
+function updateDisplay() {
+    updateCounterDisplay();
+    updateGrowthRateDisplay();
+    updatePurchaseButtons();
+}
+function updateCounterDisplay() {
+    counterDisplay.textContent = `${counter.toFixed(2)} dollars 💰`;
+}
+function updateGrowthRateDisplay() {
+    growthRateDisplay.textContent = `${growthRate.toFixed(2)} dollars/sec`;
+}
+function updatePurchaseButtons() {
+    purchaseItems.forEach((item) => {
+        const button = document.querySelector(`button[data-name="${item.name}"]`);
+        const itemCountDisplay = document.querySelector(`div[data-name="${item.name}"]`);
+        button.disabled = counter < item.cost;
+        button.innerHTML = `Purchase ${item.name} for ${item.cost.toFixed(2)} dollars`;
+        itemCountDisplay.textContent = `[${item.name}: ${item.count}]`;
+    });
+}
+// Add event listener to the button, updates the counter in HTML
+button.addEventListener("click", updateCounter);
+function createPurchaseButton(item) {
+    const purchaseButton = document.createElement("button");
+    purchaseButton.innerHTML = `Purchase ${item.name} for ${item.cost} dollars`;
+    purchaseButton.dataset.name = item.name;
+    purchaseButton.className = "purchase-button";
+    purchaseButton.addEventListener("click", () => {
+        attemptToPurchase(item);
+    });
+    return purchaseButton;
+}
+function attemptToPurchase(item) {
+    if (counter >= item.cost) {
+        counter -= item.cost;
+        growthRate += item.rate;
+        item.count++;
+        item.cost *= item.priceIncreaseFactor;
+        updateDisplay();
+    }
+}
+// Loop through each purchaseItem and append the created button
+purchaseItems.forEach((item) => {
+    const purchaseButton = createPurchaseButton(item); // Call the function to create a button
+    app.append(purchaseButton);
+    const itemDescription = document.createElement("div");
+    itemDescription.textContent = item.description;
+    app.append(itemDescription);
+    const itemCountDisplay = document.createElement("div");
+    itemCountDisplay.dataset.name = item.name;
+    app.append(itemCountDisplay);
+});
+// Increment the counter based on time elapsed
+let lastTime = performance.now();
+function incrementCounter(time) {
+    const deltaTime = time - lastTime;
+    counter += (deltaTime / 1000) * growthRate; // Increment by the fraction of a second that has passed, multiplied by the growth rate
+    updateDisplay();
+    lastTime = time;
+    requestAnimationFrame(incrementCounter);
+}
+requestAnimationFrame(incrementCounter);
