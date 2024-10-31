@@ -82,10 +82,31 @@ button:focus-visible {
   justify-content: center;
 }
 
+.main-button img {
+  width: 200px;  /* Set the desired width for the image */
+  height: 200px; /* Set the desired height for the image */
+  display: block;
+  margin: 0 auto; /* Center the image if needed */
+}
+
 .main-button {
-  margin: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0; /* Remove padding to fit the image properly */
+}
+
+.main-button:active {
+  transform: scale(1.2); /* Adjust scale as desired */
 }
 
 .purchase-button {
   margin: 10px;
+}
+
+.can-purchase {
+    background-color: #28a745; /* Example color: green */
+    color: white;
+    border-color: #28a745;
+    transition: background-color 0.3s, border-color 0.3s;
 }

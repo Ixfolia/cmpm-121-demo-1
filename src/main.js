@@ -1,11 +1,11 @@
-// import "./style.css";
+
 // -- Variables -- //
 const app = document.querySelector("#app");
 const header = document.createElement("h1");
 const gameName = "Money Maker";
 const button = document.createElement("button");
 button.className = "main-button"; // Add CSS class to main button
-const priceIncreaseFactor = 1.5;
+const priceIncreaseFactor = 1.25;
 const purchaseItems = [
     {
         name: "Investment",
@@ -54,7 +54,7 @@ const counterDisplay = document.querySelector("#counter-display");
 const growthRateDisplay = document.createElement("div");
 // -- Set HTML Element Properties -- //
 header.innerHTML = gameName;
-button.innerHTML = "Click the Bank 💰";
+button.innerHTML = '<img src="src/img/bankpng.png" alt="Bank Icon" title="Click the Bank" />';
 // Title
 document.title = gameName;
 // -- Functions -- //
@@ -76,17 +76,9 @@ function updateCounterDisplay() {
 function updateGrowthRateDisplay() {
     growthRateDisplay.textContent = `${growthRate.toFixed(2)} dollars/sec`;
 }
-function updatePurchaseButtons() {
-    purchaseItems.forEach((item) => {
-        const button = document.querySelector(`button[data-name="${item.name}"]`);
-        const itemCountDisplay = document.querySelector(`div[data-name="${item.name}"]`);
-        button.disabled = counter < item.cost;
-        button.innerHTML = `Purchase ${item.name} for ${item.cost.toFixed(2)} dollars`;
-        itemCountDisplay.textContent = `[${item.name}: ${item.count}]`;
-    });
-}
 // Add event listener to the button, updates the counter in HTML
 button.addEventListener("click", updateCounter);
+// Creating Purchase Button
 function createPurchaseButton(item) {
     const purchaseButton = document.createElement("button");
     purchaseButton.innerHTML = `Purchase ${item.name} for ${item.cost} dollars`;
@@ -97,6 +89,7 @@ function createPurchaseButton(item) {
     });
     return purchaseButton;
 }
+// Attempt to purchase an item
 function attemptToPurchase(item) {
     if (counter >= item.cost) {
         counter -= item.cost;
@@ -105,6 +98,26 @@ function attemptToPurchase(item) {
         item.cost *= item.priceIncreaseFactor;
         updateDisplay();
     }
+}
+function updatePurchaseButtons() {
+    purchaseItems.forEach((item) => {
+        const button = document.querySelector(`button[data-name="${item.name}"]`);
+        // Check if the button was successfully found
+        if (button) {
+            if (counter >= item.cost) {
+                button.classList.add('can-purchase'); // Use 'button', not 'purchaseButton'
+            }
+            else {
+                button.classList.remove('can-purchase');
+            }
+            button.disabled = counter < item.cost;
+            button.innerHTML = `Purchase ${item.name} for ${item.cost.toFixed(2)} dollars`;
+        }
+        const itemCountDisplay = document.querySelector(`div[data-name="${item.name}"]`);
+        if (itemCountDisplay) {
+            itemCountDisplay.textContent = `[${item.name}: ${item.count}]`;
+        }
+    });
 }
 // Loop through each purchaseItem and append the created button
 purchaseItems.forEach((item) => {
